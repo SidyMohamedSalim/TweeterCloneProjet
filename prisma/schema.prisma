@@ -1,0 +1,61 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String @id @default(cuid())
+  email    String @unique
+  password String
+  name     String
+
+  tweets     Tweet[]     @relation(name: "userTweet")
+  TweetLikes TweetLike[] @relation(name: "userLike")
+
+  userFollowers Followers[] @relation(name: "userfollowers") //les gens qui te suits
+  userFollowing Followers[] @relation(name: "userFollowing") //les gens que tu suit
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+}
+
+model Followers {
+  userEmail String
+  user      User   @relation(references: [email], name: "userFollowing", fields: [userEmail])
+
+  userFollows String
+  follower    User   @relation(references: [email], name: "userfollowers", fields: [userFollows])
+
+  @@id([userFollows, userEmail])
+}
+
+model Tweet {
+  id         String      @id @default(cuid())
+  content    String
+  userEmail  String
+  user       User        @relation(name: "userTweet", fields: [userEmail], references: [email])
+  TweetLikes TweetLike[] @relation(name: "tweetLike")
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+}
+
+model TweetLike {
+  userEmail String
+  TweetId   String
+  isLike    Boolean @default(true)
+  user      User    @relation(name: "userLike", fields: [userEmail], references: [email])
+  tweet     Tweet   @relation(name: "tweetLike", fields: [TweetId], references: [id])
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  @@id([userEmail, TweetId])
+}
