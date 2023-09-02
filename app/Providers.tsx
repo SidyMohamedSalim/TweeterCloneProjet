@@ -6,7 +6,7 @@ import { PropsWithChildren } from "react";
 const Providers = ({ children }: PropsWithChildren) => {
   const queryClient = new QueryClient({});
   return (
-    <div className="bg-black ">
+    <div className="bg-black selection:bg-sky-900 ">
       <QueryClientProvider client={queryClient}>
         <SessionProvider>{children}</SessionProvider>
       </QueryClientProvider>

@@ -21,7 +21,7 @@ async function Headers() {
               <Link
                 href={nav.link}
                 key={i}
-                className="flex gap-3 px-3 py-2  hover:bg-gray-700  max-md:hover:rounded-full w-full items-center"
+                className="flex gap-3 px-3 py-2 justify-center hover:bg-gray-700  max-md:hover:rounded-full w-full items-center"
               >
                 <nav.icon className="w-6 h-6" />
                 <span className="max-md:hidden">{nav.title}</span>

@@ -1,4 +1,4 @@
-import { Tweet } from "@prisma/client";
+import { Tweet, TweetLike } from "@prisma/client";
 import {
   BarChart2,
   Heart,
@@ -8,13 +8,32 @@ import {
   Share,
   User2,
 } from "lucide-react";
-import Image from "next/image";
 import React from "react";
+import { TweetLikes } from "./TweetLike";
+import { getServerSession } from "next-auth/next";
 
 const TweetCard = async ({ tweet }: { tweet: Tweet }) => {
+  const session = await getServerSession();
   const user = await prisma?.user.findUnique({
     where: { email: tweet.userEmail },
   });
+
+  const tweetlike = await prisma?.tweetLike.findUnique({
+    where: {
+      userEmail_TweetId: {
+        userEmail: session?.user?.email ?? "",
+        TweetId: tweet.id,
+      },
+    },
+  });
+
+  const allLikes = await prisma?.tweetLike.findMany({
+    where: {
+      TweetId: tweet.id,
+    },
+  });
+  const nbreLikes = allLikes?.length ?? 0;
+
   return (
     <section className="max-w-lg min-w-[24rem] mr-4 my-2 p-3 text-sm font-semibold border-gray-700 rounded-lg border ">
       {/* user information bloc */}
@@ -44,7 +63,11 @@ const TweetCard = async ({ tweet }: { tweet: Tweet }) => {
       <div className="pl-14 flex justify-between items-center">
         <ActionIcon nbr={70} color="green" Icon={MessageCircle} />
         <ActionIcon nbr={510} color="sky" Icon={Repeat2} />
-        <ActionIcon nbr={12} color="red" Icon={Heart} />
+        <TweetLikes
+          id={tweet.id}
+          islike={tweetlike?.isLike ? true : false}
+          countLike={nbreLikes}
+        />
         <ActionIcon nbr={120} Icon={BarChart2} />
 
         <div className="pt-3">

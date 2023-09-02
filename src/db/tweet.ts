@@ -6,3 +6,9 @@ export async function addTweetClient(content: string) {
     method: "POST",
   });
 }
+
+export const LikeOrDislikeOnTweet = async (tweetId: string, exits: boolean) => {
+  return await client(`/api/tweets/${tweetId}/like`, {
+    method: exits ? "DELETE" : "POST",
+  });
+};
