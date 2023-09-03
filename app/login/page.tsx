@@ -5,8 +5,8 @@ import { MoveLeft } from "lucide-react";
 
 export default function Login() {
   return (
-    <div className="flex h-screen w-screen items-center justify-center bg-gray-50">
-      <div className="z-10 relative w-full max-w-md overflow-hidden rounded-2xl border border-gray-100 transition-all shadow-xl">
+    <div className="flex col-span-5 max-md:col-span-8   h-screen w-full items-center justify-center ">
+      <div className="z-10 relative w-full max-w-md overflow-hidden rounded-2xl border border-slate-50 transition-all shadow-xl">
         <Link href="/" className="absolute top-6 left-6">
           <MoveLeft
             className="font-extrabold hover:scale-150"
@@ -24,7 +24,7 @@ export default function Login() {
               height={20}
             />
           </Link>
-          <h3 className="text-xl font-semibold">Sign In</h3>
+          <h3 className="text-xl text-black font-semibold">Sign In</h3>
           <p className="text-sm text-gray-500">
             Use your email and password to sign in
           </p>

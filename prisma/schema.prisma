@@ -22,6 +22,8 @@ model User {
   userFollowers Followers[] @relation(name: "userfollowers") //les gens qui te suits
   userFollowing Followers[] @relation(name: "userFollowing") //les gens que tu suit
 
+  replies Replies[] @relation(name: "userReply")
+
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
 }
@@ -45,6 +47,8 @@ model Tweet {
 
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
+
+  replies Replies[] @relation(name: "replyTweet")
 }
 
 model TweetLike {
@@ -58,4 +62,14 @@ model TweetLike {
   updated_at DateTime @default(now())
 
   @@id([userEmail, TweetId])
+}
+
+model Replies {
+  id        String @id @default(cuid())
+  TweetId   String
+  userEmail String
+  content   String
+
+  tweet Tweet @relation(name: "replyTweet", references: [id], fields: [TweetId])
+  user  User  @relation(name: "userReply", fields: [userEmail], references: [email])
 }

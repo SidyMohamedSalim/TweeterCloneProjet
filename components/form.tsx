@@ -61,7 +61,7 @@ export default function Form({ type }: { type: "login" | "register" }) {
   return (
     <form
       onSubmit={(e) => onsubmit(e)}
-      className="flex flex-col space-y-4 bg-gray-50 px-4 py-8 sm:px-16"
+      className="flex flex-col space-y-4 bg-gray-50 text-black px-4 py-8 sm:px-16"
     >
       {type === "register" && (
         <div>

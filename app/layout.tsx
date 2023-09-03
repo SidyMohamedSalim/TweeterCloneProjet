@@ -5,6 +5,7 @@ import { Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import { Suspense } from "react";
 import Providers from "./Providers";
+import Headers from "./header";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -37,7 +38,12 @@ export default async function RootLayout({
       <body className={inter.variable}>
         <Providers>
           <Toaster />
-          <Suspense fallback="Loading..."> {children}</Suspense>
+          <Suspense fallback="Loading...">
+            <div className="grid grid-cols-10  max-w-6xl mx-auto text-white">
+              <Headers />
+              {children}
+            </div>
+          </Suspense>
         </Providers>
       </body>
     </html>

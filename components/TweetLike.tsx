@@ -33,15 +33,16 @@ export const TweetLikes = ({
       },
     }
   );
-  const onSubmit = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const onSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
 
     mutate({ tweetId: id, islike });
   };
 
   return (
-    <div
-      className={`text-gray-400 cursor-pointer transition-all delay-75 hover:text-red-500 text-[0.6rem] flex items-center gap-2 pt-3`}
+    <button
+      disabled={isLoading}
+      className={`text-gray-400   cursor-pointer transition-all delay-75 hover:text-red-500 text-[0.6rem] flex items-center gap-2 pt-3`}
       onClick={(e) => onSubmit(e)}
     >
       <Heart
@@ -52,6 +53,6 @@ export const TweetLikes = ({
         fill={islike ? "red" : "black"}
       />
       <h1>{countLike}</h1>
-    </div>
+    </button>
   );
 };

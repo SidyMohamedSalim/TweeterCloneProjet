@@ -17,7 +17,7 @@ export const navList: { title: string; icon: LucideIcon; link: string }[] = [
   {
     title: "Explore",
     icon: Search,
-    link: "/",
+    link: "/explore",
   },
   {
     title: "Notifications",
