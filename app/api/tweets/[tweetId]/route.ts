@@ -6,6 +6,7 @@ import { z } from "zod";
 
 const bodyScheme = z.object({
   content: z.string(),
+  tweetParentId: z.string().optional(),
 });
 
 export async function POST(req: Request) {
@@ -20,6 +21,7 @@ export async function POST(req: Request) {
     const tweet = await prisma.tweet.create({
       data: {
         content: bodyParse.content,
+        tweetParentId: bodyParse.tweetParentId,
         userEmail: session.user.email,
       },
     });

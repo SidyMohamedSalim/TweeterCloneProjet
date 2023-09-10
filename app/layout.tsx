@@ -6,6 +6,7 @@ import { Toaster } from "react-hot-toast";
 import { Suspense } from "react";
 import Providers from "./Providers";
 import Headers from "./header";
+import { getServerSession } from "next-auth/next";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -33,6 +34,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const session = await getServerSession();
   return (
     <html lang="en">
       <body className={inter.variable}>
@@ -40,8 +42,14 @@ export default async function RootLayout({
           <Toaster />
           <Suspense fallback="Loading...">
             <div className="grid grid-cols-10  max-w-6xl mx-auto text-white">
-              <Headers />
-              {children}
+              <Headers session={session} />
+              <div
+                data-te-perfect-scrollbar-init
+                data-te-suppress-scroll-x="true"
+                className="px-6 col-span-7 max-w-lg min-w-[24rem]  overflow-y-scroll h-screen  "
+              >
+                {children}
+              </div>
             </div>
           </Suspense>
         </Providers>

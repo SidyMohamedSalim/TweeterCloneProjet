@@ -8,8 +8,15 @@ import { addTweetClient } from "src/db/tweet";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import AvatarUser from "./AvatarUser";
 
-const AddTweet = ({ connected }: { connected: boolean }) => {
+const AddTweet = ({
+  connected,
+  sessionEmail,
+}: {
+  sessionEmail?: string;
+  connected: boolean;
+}) => {
   const router = useRouter();
   const { mutate, isLoading, isError, isSuccess } = useMutation(
     async (content: string) => await addTweetClient(content),
@@ -39,9 +46,7 @@ const AddTweet = ({ connected }: { connected: boolean }) => {
     <div>
       {connected ? (
         <div className="flex ml-1 gap-4 items-start">
-          <div className=" bg-gray-600 w-14 h-12 rounded-full flex items-center justify-center">
-            <User2 size={25} />
-          </div>
+          <AvatarUser email={sessionEmail ?? ""} />
           <form
             action="submit"
             onSubmit={(e) => handleSubmit(e)}

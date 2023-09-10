@@ -40,3 +40,8 @@ export const navList: { title: string; icon: LucideIcon; link: string }[] = [
     link: "/",
   },
 ];
+
+export const QueryKeys = {
+  all: (name: string) => [name],
+  byId: (name: string, id: string) => [name, id],
+};

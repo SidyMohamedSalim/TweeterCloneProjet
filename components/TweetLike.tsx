@@ -12,10 +12,14 @@ export const TweetLikes = ({
   id,
   islike,
   countLike,
+  show = true,
+  size = 18,
 }: {
   id: string;
   islike: boolean;
   countLike: number;
+  show?: boolean;
+  size?: number;
 }) => {
   const router = useRouter();
   const { mutate, isLoading, isError } = useMutation(
@@ -49,10 +53,10 @@ export const TweetLikes = ({
         className={`text-gray-400 ${
           islike ? " text-red-500" : ""
         } hover:text-red-500 hover:shadow-xl hover:shadow-red-400`}
-        size={18}
+        size={size}
         fill={islike ? "red" : "black"}
       />
-      <h1>{countLike}</h1>
+      <h1>{show && countLike}</h1>
     </button>
   );
 };

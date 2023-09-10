@@ -11,6 +11,9 @@ import {
 import React from "react";
 import { TweetLikes } from "./TweetLike";
 import { getServerSession } from "next-auth/next";
+import Link from "next/link";
+import AvatarA from "./AvatarA";
+import Image from "next/image";
 
 const TweetCard = async ({ tweet }: { tweet: Tweet }) => {
   const session = await getServerSession();
@@ -27,67 +30,81 @@ const TweetCard = async ({ tweet }: { tweet: Tweet }) => {
     },
   });
 
+  const parentTweet = await prisma?.tweet.findUnique({
+    where: { id: tweet.tweetParentId ?? "" },
+  });
+
   const allLikes = await prisma?.tweetLike.findMany({
     where: {
       TweetId: tweet.id,
     },
   });
+
+  const allRelplies = await prisma?.tweet.findMany({
+    where: {
+      tweetParentId: tweet.id,
+    },
+  });
+
+  const nbreReplies = allRelplies?.length ?? 0;
   const nbreLikes = allLikes?.length ?? 0;
 
-  return (
-    <section className="max-w-lg min-w-[24rem] mr-4 my-2 p-3 text-sm font-semibold border-gray-700 rounded-lg border ">
-      {/* user information bloc */}
-      <div className="flex gap-2 justify-start items-start">
-        <div className=" bg-gray-600 w-10 h-10 rounded-lg flex items-center justify-center">
-          <User2 size={20} />
-        </div>
-        <div>
-          <h1 className="font-extrabold">{user?.name}</h1>
-          <p>{user?.email}</p>
-        </div>
-      </div>
+  return await (
+    <section className="w-full  my-2 p-3 text-sm font-semibold border-gray-700 rounded-lg border ">
+      {parentTweet && (
+        <p className="text-xs opacity-50 pb-2 text-end italic">
+          replied to{" "}
+          <Link className="text-sky-500" href={`/tweets/${parentTweet.id}`}>
+            {parentTweet.userEmail}
+          </Link>
+        </p>
+      )}
+      <Link href={`/tweets/${tweet.id}`}>
+        {/* user information bloc */}
+        <AvatarA name={user?.name} email={user?.email} />
 
-      {/* image  bloc */}
-      <div className="pl-14 w-full">
-        <p className="mr-auto">{tweet.content}</p>
-        {/* <Image
-          className="w-full border border-gray-600 rounded-lg hover:opacity-50 cursor-pointer"
-          src={"/pub.jpg"}
-          alt={"pub image"}
-          width={400}
-          height={400}
-        /> */}
-      </div>
-
-      {/* actions bloc */}
-      <div className="pl-14 flex justify-between items-center">
-        <ActionIcon nbr={70} color="green" Icon={MessageCircle} />
-        <ActionIcon nbr={510} color="sky" Icon={Repeat2} />
-        <TweetLikes
-          id={tweet.id}
-          islike={tweetlike?.isLike ? true : false}
-          countLike={nbreLikes}
-        />
-        <ActionIcon nbr={120} Icon={BarChart2} />
-
-        <div className="pt-3">
-          <Share color="gray" size={18} />
+        {/* image  bloc */}
+        <div className="pl-14 w-full">
+          <p className="mr-auto">{tweet.content}</p>
+          {/* <Image
+            className="w-full border border-gray-600 rounded-lg hover:opacity-50 cursor-pointer"
+            src={"/pub.jpg"}
+            alt={"pub image"}
+            width={400}
+            height={400}
+          /> */}
         </div>
-      </div>
+
+        {/* actions bloc */}
+        <div className="pl-14 flex justify-between items-center">
+          <ActionIcon nbr={nbreReplies} Icon={MessageCircle} />
+          <ActionIcon nbr={510} Icon={Repeat2} />
+          <TweetLikes
+            id={tweet.id}
+            islike={tweetlike?.isLike ? true : false}
+            countLike={nbreLikes}
+          />
+          <ActionIcon nbr={120} Icon={BarChart2} />
+
+          <div className="pt-3">
+            <Share color="gray" size={18} />
+          </div>
+        </div>
+      </Link>
     </section>
   );
 };
 
 export default TweetCard;
 
-const ActionIcon = ({
+export const ActionIcon = ({
   nbr,
   Icon,
-  color,
+  size,
 }: {
-  nbr: number;
+  nbr?: number;
   Icon: LucideIcon;
-  color?: string;
+  size?: number;
 }) => {
   return (
     <div
@@ -95,7 +112,7 @@ const ActionIcon = ({
     >
       <Icon
         className={`text-gray-400 hover:text-sky-500 hover:shadow-xl hover:shadow-sky-400`}
-        size={18}
+        size={size ? size : 18}
       />
       <h1>{nbr}</h1>
     </div>

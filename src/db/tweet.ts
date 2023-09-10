@@ -1,8 +1,8 @@
 import { client } from "./client";
 
-export async function addTweetClient(content: string) {
+export async function addTweetClient(content: string, tweetParentId?: string) {
   return await client(`/api/tweets/add`, {
-    data: { content },
+    data: { content, tweetParentId },
     method: "POST",
   });
 }

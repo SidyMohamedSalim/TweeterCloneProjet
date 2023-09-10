@@ -3,6 +3,7 @@ import React from "react";
 import prisma from "../../lib/prisma";
 import FollowerBtn from "./FollowerBtn";
 import { getServerSession } from "next-auth/next";
+import Link from "next/link";
 
 const page = async () => {
   const session = await getServerSession();
@@ -15,7 +16,7 @@ const page = async () => {
   });
 
   return (
-    <div className="col-span-5 max-md:col-span-8 w-full h-screen overflow-y-scroll ">
+    <div>
       {users.map(async (user) => {
         const follow = await prisma.followers.findUnique({
           where: {
@@ -31,7 +32,10 @@ const page = async () => {
             key={user.id}
             className="max-w-lg min-w-[24rem] mr-4 my-2 p-3 text-sm font-semibold rounded-lg  flex justify-between items-center "
           >
-            <div className="flex justify-evenly items-start gap-4">
+            <Link
+              href={`/profile/${user.email}`}
+              className="flex justify-evenly items-start gap-4"
+            >
               <div className=" bg-gray-600 w-10 h-10 rounded-full flex items-center justify-center">
                 <User2 size={20} />
               </div>
@@ -39,7 +43,7 @@ const page = async () => {
                 <h2 className="text-sm font-extrabold">{user.name}</h2>
                 <p className="text-sm opacity-50">{user.email}</p>
               </div>
-            </div>
+            </Link>
             <FollowerBtn isFollow={follow ? true : false} userId={user.id} />
           </div>
         );
