@@ -6,6 +6,7 @@ import { TweetLikes } from "./TweetLike";
 import { Tweet } from "@prisma/client";
 import { getServerSession } from "next-auth/next";
 import Link from "next/link";
+import { formatDate } from "../src/config/formatDate";
 
 const ReplyTweetView = async ({ tweet }: { tweet: Tweet }) => {
   const session = await getServerSession();
@@ -40,7 +41,10 @@ const ReplyTweetView = async ({ tweet }: { tweet: Tweet }) => {
 
   return (
     <div className="border-b-2 mb-2  border-gray-700 py-5">
-      <Link href={`/tweets/${tweet.id}`}>
+      <Link
+        href={`/tweets/${tweet.id}`}
+        className="flex justify-between items-start"
+      >
         <div className="flex justify-start items-start gap-2">
           <div className=" bg-gray-800 flex-none w-10 h-10 rounded-lg flex items-center justify-center">
             <User2 size={20} />
@@ -55,6 +59,10 @@ const ReplyTweetView = async ({ tweet }: { tweet: Tweet }) => {
             <p>{tweet.content}</p>
           </div>
         </div>
+
+        <p className="text-xs text-gray-500">
+          {formatDate(new Date(tweet.created_at))}
+        </p>
       </Link>
       {/* actions bloc */}
       <div className="pl-14 flex justify-between items-center">

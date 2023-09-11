@@ -14,6 +14,7 @@ import { getServerSession } from "next-auth/next";
 import Link from "next/link";
 import AvatarA from "./AvatarA";
 import Image from "next/image";
+import { formatDate } from "src/config/formatDate";
 
 const TweetCard = async ({ tweet }: { tweet: Tweet }) => {
   const session = await getServerSession();
@@ -61,7 +62,12 @@ const TweetCard = async ({ tweet }: { tweet: Tweet }) => {
       )}
       <Link href={`/tweets/${tweet.id}`}>
         {/* user information bloc */}
-        <AvatarA name={user?.name} email={user?.email} />
+        <div className="flex items-start justify-between">
+          <AvatarA name={user?.name} email={user?.email} />
+          <p className="text-xs text-gray-500">
+            {formatDate(new Date(tweet.created_at))}
+          </p>
+        </div>
 
         {/* image  bloc */}
         <div className="pl-14 w-full">

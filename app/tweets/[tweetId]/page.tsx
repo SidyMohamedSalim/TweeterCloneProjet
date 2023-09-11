@@ -19,6 +19,7 @@ import { SendHorizonal } from "lucide-react";
 import ReplyTweetForm from "../../../components/ReplyTweetForm";
 import ReplyTweetView from "@/components/ReplyTweet";
 import AvatarA from "@/components/AvatarA";
+import { formatDate } from "../../../src/config/formatDate";
 import {
   getnbreReplies,
   getnbreLikes,
@@ -60,7 +61,12 @@ const page = async ({ params }: { params: { tweetId: string } }) => {
   return (
     <section className="mr-4 my-2 p-3 text-sm font-semibold border-gray-700 rounded-lg border ">
       {/* user information bloc */}
-      <AvatarA email={user?.email} name={user?.name} isLink={true} />
+      <div className="flex justify-between items-start">
+        <AvatarA email={user?.email} name={user?.name} isLink={true} />
+        <p className="text-xs text-gray-500">
+          {formatDate(new Date(tweet.created_at))}
+        </p>
+      </div>
 
       {/* image  bloc */}
       <div className="py-4 w-full">
