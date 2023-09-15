@@ -1,7 +1,6 @@
 "use client";
 import { useMutation } from "@tanstack/react-query";
 import { SendHorizonal, User2 } from "lucide-react";
-import Image from "next/image";
 import React from "react";
 import { FormEvent } from "react";
 import { addTweetClient } from "src/db/tweet";
